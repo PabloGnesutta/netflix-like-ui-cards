@@ -2,35 +2,37 @@
   <div>
     <div class="container">
       <div class="space"></div>
-
-      <div class="slider-container">
+      <div class="items-container">
         <div
           class="item"
-          v-for="(item, i) in items"
-          :ref="'item' + i"
-          :key="i"
-          :data-item="i"
+          v-for="item in items"
+          :ref="'item' + item"
+          :key="item"
+          :data-item="item"
           @mouseleave="leaveItem"
         >
-          <div class="thumbnail" @mouseenter="enterItem(i)">
+          <div class="thumbnail" @mouseenter="enterItem(item)">
             <img
               src="https://www.infobae.com/new-resizer/gwaND9ofHqQLwrJrNNwiHqTrjpY=/768x432/filters:format(jpg):quality(85)/s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2017/05/12115047/homero-simpson-1920-1024x575.jpg"
               alt="foto de portada de video"
             />
           </div>
 
+          <!-- <transition name="opacity" mode="in-out"> -->
           <div
             class="detailed-view-container"
             :class="{
-              'from-left': i == 0,
-              'from-right': i == items.length - 1,
+              'from-left': item == 1,
+              'from-center': item == 2,
+              'from-right': item == 3,
             }"
             v-if="
-              currentItem == i && (state === 'hovered' || state === 'expanded')
+              currentItem == item &&
+              (state === 'hovered' || state === 'expanded')
             "
             @click.prevent="clickVideo"
           >
-            <div class="hovered-view relative">
+            <div class="detailed-view relative">
               <div class="thumbnail">
                 <img
                   src="https://www.infobae.com/new-resizer/gwaND9ofHqQLwrJrNNwiHqTrjpY=/768x432/filters:format(jpg):quality(85)/s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2017/05/12115047/homero-simpson-1920-1024x575.jpg"
@@ -77,6 +79,7 @@
               </div>
             </div>
           </div>
+          <!-- </transition> -->
         </div>
       </div>
     </div>
@@ -88,38 +91,11 @@
 export default {
   data() {
     return {
-      loading: false,
       state: "initial",
-      currentItem: 0,
+      currentItem: 1,
       currentItemNode: "",
       currentDetailedViewContainerNode: "",
-      items: [
-        {
-          imgUrl: "",
-          videoUrl: "../../public/video/1.mp4",
-          title: "Película 1",
-          dscription: "Descripción 1",
-          author: "Autor 1",
-          publcationDate: new Date(),
-        },
-        {
-          imgUrl: "",
-          videoUrl: "",
-          title: "Película 2",
-          dscription: "Descripción 2",
-          author: "Autor 2",
-          publcationDate: new Date(),
-        },
-        {
-          imgUrl: "",
-          videoUrl: "",
-          title: "Película 3",
-          dscription: "Descripción 3",
-          author: "Autor 3",
-          publcationDate: new Date(),
-        },
-      ],
-
+      items: [1, 2, 3],
       videoLoaded: false,
       mousePath: "",
     };
@@ -128,6 +104,7 @@ export default {
   mounted() {
     document.onmousemove = this.handleMouseMove;
     document.onclick = this.handleMouseClick;
+    // console.log('withd', )
   },
 
   methods: {
@@ -136,7 +113,7 @@ export default {
     },
 
     handleMouseClick(event) {
-      console.log("clicked, x pos:", event.x);
+      console.log("clicked", event.x);
     },
 
     //Al terminar la transición de hover out, se fija si está parado en otro item, de se así, lo anima:
@@ -149,33 +126,37 @@ export default {
       }
     },
 
-    enterItem(index) {
+    enterItem(item) {
       // return
 
-      if (this.state !== "initial" || this.loading) return;
+      if (this.state !== "initial") return;
 
-      this.currentItem = index;
+      this.currentItem = item;
       this.state = "hovered";
 
-      const ref = "item" + index;
+      const ref = "item" + item;
       this.currentItemNode = this.$refs[ref][0];
 
       const nodes = this.currentItemNode.childNodes;
-      this.loading = true;
 
       this.$nextTick(() => {
         for (var i = 0; i < nodes.length; i++) {
           if (nodes[i].classList.contains("detailed-view-container")) {
             let rect = this.currentItemNode.getBoundingClientRect();
 
+            //ver si es primer, último, o ítem del medio para ajustar posición
+
             nodes[i].style.top = `${rect.top}px`;
 
-            if (index == 0) {
+            if (item == 1) {
               nodes[i].style.left = `${rect.left}px`;
-            } else if (index == this.items.length - 1) {
-              nodes[i].style.right = `${window.innerWidth - rect.right}px`;
-            } else {
+              // nodes[i].classList.add("from-left");
+            } else if (item == 2) {
+              // nodes[i].classList.add("from-center");
               nodes[i].style.left = `${rect.left - 40}px`;
+            } else if (item == 3) {
+              nodes[i].style.right = `${window.innerWidth - rect.right}px`;
+              // nodes[i].classList.add("from-right");
             }
 
             this.currentDetailedViewContainerNode = nodes[i];
@@ -184,11 +165,8 @@ export default {
         }
 
         setTimeout(() => {
-          if (this.loading) {
-            this.currentItemNode.classList.add("hovered");
-          }
-          this.loading = false;
-        }, 400);
+          this.currentItemNode.classList.add("hovered");
+        }, 600);
       });
 
       //simula la llamada al backend para obtener el video
@@ -197,16 +175,11 @@ export default {
         setTimeout(() => {
           this.currentDetailedViewContainerNode.classList.add("fade-in");
         }, 100);
-      }, 2000);
+      }, 1000);
     },
 
     leaveItem(item) {
-      if (this.loading) {
-        this.state = "initial";
-        this.currentItem = null;
-        this.loading = false;
-        return;
-      }
+      // return;
 
       if (this.state !== "hovered") return;
 
@@ -225,15 +198,10 @@ export default {
       this.state = "expanded";
       this.currentItemNode.classList.remove("hovered");
       this.currentItemNode.classList.add("expanded");
-
-      setTimeout(() => {
-        this.currentItemNode.classList.add("expanded-normal-scale");
-      }, 300);
     },
 
     reset() {
       this.currentItemNode.classList.remove("expanded");
-      this.currentItemNode.classList.remove("expanded-normal-scale");
       this.currentDetailedViewContainerNode.classList.remove("fade-in");
       setTimeout(() => {
         this.state = "initial";
@@ -251,7 +219,7 @@ export default {
   padding: 1em;
 }
 
-.slider-container {
+.items-container {
   display: flex;
   flex-wrap: wrap;
   gap: 1em;
@@ -259,7 +227,7 @@ export default {
 
 .item {
   width: 320px;
-  height: 180px;
+  // height: 180px;
   position: relative;
   transition: all 0.3s ease-out;
 }
@@ -269,10 +237,9 @@ export default {
 .detailed-view-container {
   width: 400px;
   position: fixed;
-  transform: scaleX(0.8) scaleY(0.8);
-  transform-origin: top center;
-  z-index: 20;
   transition: all 0.3s ease-out;
+  z-index: 20;
+  transform: scaleX(0.8) scaleY(0.8);
 }
 
 .item.hovered .detailed-view-container {
@@ -286,6 +253,10 @@ export default {
 
 .from-right {
   transform-origin: top right;
+}
+
+.from-center {
+  transform-origin: top center;
 }
 
 .video-container {
@@ -309,14 +280,8 @@ video {
 .item.expanded .detailed-view-container {
   top: 2em !important; //porque se le agrega estilo in-line que tiene prioridad
   left: 50% !important;
-  scale: 0.6;
   transform: translateX(-50%);
   width: 700px;
-  transition: all .3s ease-out;
-}
-
-.item.expanded-normal-scale .detailed-view-container {
-  transform: translateX(-50%) scale(1);
 }
 
 .expanded-view {
@@ -326,10 +291,8 @@ video {
 }
 
 .item.expanded .expanded-view {
-  opacity: 0;
   display: flex;
   padding: 1em;
-  transition: opacity .5s ease-out;
   .left {
     h2 {
       margin-bottom: 0.5em;
@@ -344,17 +307,11 @@ video {
   }
 }
 
-//c1720679
-
-.item.expanded-normal-scale .expanded-view {
-  opacity: 1;
-}
-
 // ACTION ICONS:
 
 .action-icons {
   opacity: 0;
-  position: absolute;
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -362,7 +319,7 @@ video {
   z-index: 2;
   background: black;
   padding: 0.5em;
-  transition: all 0.3s ease-out;
+  transition: opacity 0.2s ease-out;
 }
 
 .item.hovered .action-icons {
@@ -372,6 +329,7 @@ video {
 .item.expanded .action-icons {
   opacity: 1;
   background: rgba(0, 0, 0, 0.527);
+  position: absolute;
   bottom: 0;
   padding: 1em;
 }

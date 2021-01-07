@@ -1,32 +1,95 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  color: #f4f4f4;
 }
 
-#nav {
-  padding: 30px;
+img,
+video {
+  width: 100%;
+  display: block;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+.highlight {
+  color: coral;
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+.relative {
+  position: relative;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.753);
+  z-index: 15;
+}
+
+$animationDuration: 0.3s;
+$opacitySlowerDuration: 4s;
+
+.opacity-enter-active {
+  animation: opacity-in $animationDuration ease-out forwards;
+}
+
+.opacity-leave-active {
+  animation: opacity-out $animationDuration ease-out forwards;
+}
+
+@keyframes opacity-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes opacity-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+//opacity slower
+
+.opacity-slower-enter-active {
+  animation: opacity-slower-in $opacitySlowerDuration ease-out forwards;
+}
+
+.opacity-slower-leave-active {
+  animation: opacity-slower-out $opacitySlowerDuration ease-out forwards;
+}
+
+@keyframes opacity-slower-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes opacity-slower-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 </style>
