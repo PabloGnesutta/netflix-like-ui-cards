@@ -5,11 +5,11 @@
 
       <div class="slider-container">
         <div
-          class="item"
           v-for="(item, i) in items"
-          :ref="'item' + i"
+          class="item"
           :key="i"
           :data-item="i"
+          :ref="'item' + i"
           @mouseleave="leaveItem"
         >
           <div class="thumbnail" @mouseenter="enterItem(i)">
@@ -65,15 +65,19 @@
 
             <div class="expanded-view">
               <div class="left">
-                <h2>El título que le gusta a tu vueja</h2>
+                <h2>{{ item.title }}</h2>
                 <p>
-                  Una descripción que te vende lo que sea. Comprá esto que te va
-                  a hacer tan feliz que no lo vas a poder creer.
+                  {{ item.description }}
                 </p>
               </div>
               <div class="right">
-                <p>Instructor <span class="highlight">Marcelo Tinelli</span></p>
-                <p>Fecha de publicación <span class="highlight">1984</span></p>
+                <p>
+                  Autor/a: <span class="highlight">{{ item.author }}</span>
+                </p>
+                <p>
+                  Fecha de publicación:
+                  <span class="highlight">{{ item.publcationDate.toLocaleDateString('es-AR') }}</span>
+                </p>
               </div>
             </div>
           </div>
@@ -98,7 +102,7 @@ export default {
           imgUrl: "",
           videoUrl: "../../public/video/1.mp4",
           title: "Película 1",
-          dscription: "Descripción 1",
+          description: "Descripción 1",
           author: "Autor 1",
           publcationDate: new Date(),
         },
@@ -106,7 +110,7 @@ export default {
           imgUrl: "",
           videoUrl: "",
           title: "Película 2",
-          dscription: "Descripción 2",
+          description: "Descripción 2",
           author: "Autor 2",
           publcationDate: new Date(),
         },
@@ -114,7 +118,7 @@ export default {
           imgUrl: "",
           videoUrl: "",
           title: "Película 3",
-          dscription: "Descripción 3",
+          description: "Descripción 3",
           author: "Autor 3",
           publcationDate: new Date(),
         },
@@ -312,7 +316,7 @@ video {
   scale: 0.6;
   transform: translateX(-50%);
   width: 700px;
-  transition: all .3s ease-out;
+  transition: all 0.3s ease-out;
 }
 
 .item.expanded-normal-scale .detailed-view-container {
@@ -329,7 +333,7 @@ video {
   opacity: 0;
   display: flex;
   padding: 1em;
-  transition: opacity .5s ease-out;
+  transition: opacity 0.5s ease-out;
   .left {
     h2 {
       margin-bottom: 0.5em;

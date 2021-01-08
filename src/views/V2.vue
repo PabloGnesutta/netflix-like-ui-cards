@@ -18,7 +18,6 @@
             />
           </div>
 
-          <!-- <transition name="opacity" mode="in-out"> -->
           <div
             class="detailed-view-container"
             :class="{
@@ -67,19 +66,24 @@
 
             <div class="expanded-view">
               <div class="left">
-                <h2>El título que le gusta a tu vueja</h2>
+                <h2>Un título</h2>
                 <p>
-                  Una descripción que te vende lo que sea. Comprá esto que te va
-                  a hacer tan feliz que no lo vas a poder creer.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+                  et, earum praesentium adipisci dolores nostrum velit. Eos,
+                  magnam quibusdam totam aperiam aut corrupti sed excepturi
+                  iure, beatae mollitia ducimus culpa? Lorem ipsum dolor sit
+                  amet consectetur adipisicing elit. Sequi et, earum praesentium
+                  adipisci dolores nostrum velit. Eos, magnam quibusdam totam
+                  aperiam aut corrupti sed excepturi iure, beatae mollitia
+                  ducimus culpa?
                 </p>
               </div>
               <div class="right">
-                <p>Instructor <span class="highlight">Marcelo Tinelli</span></p>
-                <p>Fecha de publicación <span class="highlight">1984</span></p>
+                <p>Instructora: <span class="highlight">Juana de Arco</span></p>
+                <p>Fecha de publicación: <span class="highlight">1984</span></p>
               </div>
             </div>
           </div>
-          <!-- </transition> -->
         </div>
       </div>
     </div>
@@ -104,7 +108,6 @@ export default {
   mounted() {
     document.onmousemove = this.handleMouseMove;
     document.onclick = this.handleMouseClick;
-    // console.log('withd', )
   },
 
   methods: {
@@ -150,13 +153,10 @@ export default {
 
             if (item == 1) {
               nodes[i].style.left = `${rect.left}px`;
-              // nodes[i].classList.add("from-left");
             } else if (item == 2) {
-              // nodes[i].classList.add("from-center");
               nodes[i].style.left = `${rect.left - 40}px`;
             } else if (item == 3) {
               nodes[i].style.right = `${window.innerWidth - rect.right}px`;
-              // nodes[i].classList.add("from-right");
             }
 
             this.currentDetailedViewContainerNode = nodes[i];
@@ -227,7 +227,6 @@ export default {
 
 .item {
   width: 320px;
-  // height: 180px;
   position: relative;
   transition: all 0.3s ease-out;
 }

@@ -66,15 +66,21 @@
 
             <div class="expanded-view">
               <div class="left">
-                <h2>El título que le gusta a tu vueja</h2>
+                <h2>Un título</h2>
                 <p>
-                  Una descripción que te vende lo que sea. Comprá esto que te va
-                  a hacer tan feliz que no lo vas a poder creer.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+                  et, earum praesentium adipisci dolores nostrum velit. Eos,
+                  magnam quibusdam totam aperiam aut corrupti sed excepturi
+                  iure, beatae mollitia ducimus culpa? Lorem ipsum dolor sit
+                  amet consectetur adipisicing elit. Sequi et, earum praesentium
+                  adipisci dolores nostrum velit. Eos, magnam quibusdam totam
+                  aperiam aut corrupti sed excepturi iure, beatae mollitia
+                  ducimus culpa?
                 </p>
               </div>
               <div class="right">
-                <p>Instructor <span class="highlight">Marcelo Tinelli</span></p>
-                <p>Fecha de publicación <span class="highlight">1984</span></p>
+                <p>Instructor: <span class="highlight">Antonio Hopkins</span></p>
+                <p>Fecha de publicación: <span class="highlight">1984</span></p>
               </div>
             </div>
           </div>
@@ -102,7 +108,6 @@ export default {
   mounted() {
     document.onmousemove = this.handleMouseMove;
     document.onclick = this.handleMouseClick;
-    // console.log('withd', )
   },
 
   methods: {
@@ -309,7 +314,7 @@ video {
   z-index: 2;
   background: black;
   padding: 0.5em;
-  transition: all .3s ease-out;
+  transition: all 0.3s ease-out;
 }
 
 .item.hovered .action-icons {
